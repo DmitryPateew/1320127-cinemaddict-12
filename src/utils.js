@@ -1,3 +1,5 @@
+import {MINUTES__IN__HOURS} from "./consant.js";
+
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -5,20 +7,13 @@ export const getRandomInteger = (a = 0, b = 1) => {
 };
 
 export const transleteTimeInHours = (minute) => {
-  let result;
-  const minutesInHours = 60;
-  let hours = Number(minute) / minutesInHours;
-  if (hours > 1) {
-    result = Math.trunc(hours) + `h ` + (minute - minutesInHours) + `m`;
-  } else {
-    result = minute + `m`;
-  }
-  return result;
+  let hours = Number(minute) / MINUTES__IN__HOURS;
+  return hours > 1 ? Math.trunc(hours) + `h ` + (minute - MINUTES__IN__HOURS) + `m` : minute + `m`;
 };
 
-export const generateDataFromArray = (descriptionArray) => {
-  const randomIndex = getRandomInteger(0, descriptionArray.length - 1);
-  return descriptionArray[randomIndex];
+export const generateDataFromArray = (descriptions) => {
+  const randomIndex = getRandomInteger(0, descriptions.length - 1);
+  return descriptions[randomIndex];
 };
 
 export const render = (container, template, place) => {

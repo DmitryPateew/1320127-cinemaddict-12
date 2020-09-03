@@ -1,6 +1,6 @@
-const COUNT__FILM__CARD = 21;
-const COUNT_MOST_COMMENTED_FILM = 2;
-const FILM_PER_STEP = 5;
+import {COUNT__FILM__CARD} from "./consant.js";
+import {COUNT_MOST_COMMENTED_FILM} from "./consant.js";
+import {FILM_PER_STEP} from "./consant.js";
 
 import {createUserTitle} from "./view/user-title.js";
 import {createMenu} from "./view/site-menu.js";
@@ -19,46 +19,40 @@ import {generateListComments} from "./mock/coment.js";
 
 const films = new Array(COUNT__FILM__CARD).fill().map(generateMovie);
 
-const header = document.querySelector(`.header`);
-const main = document.querySelector(`.main`);
+const headerElement = document.querySelector(`.header`);
+const mainElement = document.querySelector(`.main`);
 
 const filter = generateFilter();
-render(header, createUserTitle(), `beforeend`);
-render(main, createMenu(filter), `beforeend`);
-render(main, createSort(), `beforeend`);
+render(headerElement, createUserTitle(), `beforeend`);
+render(mainElement, createMenu(filter), `beforeend`);
+render(mainElement, createSort(), `beforeend`);
 
-render(main, createFilmSection(), `beforeend`);
+render(mainElement, createFilmSection(), `beforeend`);
 
-const constFilmSection = document.querySelector(`.films`);
-render(constFilmSection, createFilmListSection(), `beforeend`);
-const filmList = document.querySelector(`.films-list`);
-render(filmList, createFilmListConteiner(), `beforeend`);
-const filmListConteiner = document.querySelector(`.films-list__container`);
-
+const constFilmSectionElement = document.querySelector(`.films`);
+render(constFilmSectionElement, createFilmListSection(), `beforeend`);
+const filmListElement = document.querySelector(`.films-list`);
+render(filmListElement, createFilmListConteiner(), `beforeend`);
+const filmListConteinerElement = document.querySelector(`.films-list__container`);
 
 for (let i = 0; i < Math.min(films.length, FILM_PER_STEP); i++) {
   let comments = generateListComments();
-  render(filmListConteiner, createFilmCard(films[i]), `beforeend`);
-  render(filmListConteiner, createPopUp(films[i], comments), `beforeend`);
+  render(filmListConteinerElement, createFilmCard(films[i]), `beforeend`);
+  render(filmListConteinerElement, createPopUp(films[i], comments), `beforeend`);
 }
 
 if (films.length > FILM_PER_STEP) {
   let renderedFilmCount = FILM_PER_STEP;
-
-  render(filmList, createShowButton(), `beforeend`);
-
-  const loadMoreButton = filmList.querySelector(`.films-list__show-more`);
-
-  loadMoreButton.addEventListener(`click`, (evt) => {
+  render(filmListElement, createShowButton(), `beforeend`);
+  const loadMoreButtonElement = filmListElement.querySelector(`.films-list__show-more`);
+  loadMoreButtonElement.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     films
       .slice(renderedFilmCount, renderedFilmCount + FILM_PER_STEP)
-      .forEach((film) => render(filmListConteiner, createFilmCard(film), `beforeend`));
-
+      .forEach((film) => render(filmListConteinerElement, createFilmCard(film), `beforeend`));
     renderedFilmCount += FILM_PER_STEP;
-
     if (renderedFilmCount >= films.length) {
-      loadMoreButton.remove();
+      loadMoreButtonElement.remove();
     }
   });
 }
@@ -67,10 +61,10 @@ const createFilmLitsTop = () => {
   return (`  <section class="films-list--extra">
       <h2 class="films-list__title">Top rated</h2>  </section>`);
 };
-render(constFilmSection, createFilmLitsTop(), `beforeend`);
-const filmTopList = document.querySelector(`.films-list--extra`);
-render(filmTopList, createFilmListConteiner(), `beforeend`);
-const topPoint = filmTopList.querySelector(`.films-list__container`);
+render(constFilmSectionElement, createFilmLitsTop(), `beforeend`);
+const filmTopListElement = document.querySelector(`.films-list--extra`);
+render(filmTopListElement, createFilmListConteiner(), `beforeend`);
+const topPoint = filmTopListElement.querySelector(`.films-list__container`);
 
 const maxRatingFilm = () => {
   let copyFilm = films.slice();
@@ -92,15 +86,15 @@ const createFilmLitsComented = () => {
       <h2 class="films-list__title">Most commented</h2></section>`);
 };
 
-render(constFilmSection, createFilmLitsComented(), `beforeend`);
-const filmComentedLists = document.querySelectorAll(`.films-list--extra`);
-const filmComentedList = filmComentedLists[1];
+render(constFilmSectionElement, createFilmLitsComented(), `beforeend`);
+const filmComentedListsElement = document.querySelectorAll(`.films-list--extra`);
+const filmComentedList = filmComentedListsElement[1];
 render(filmComentedList, createFilmListConteiner(), `beforeend`);
-const comentedPoint = filmComentedList.querySelector(`.films-list__container`);
+const comentedPointElement = filmComentedList.querySelector(`.films-list__container`);
 
 for (let i = 0; i < COUNT_MOST_COMMENTED_FILM; i++) {
-  render(comentedPoint, createFilmCard(films[i]), `beforeend`);
+  render(comentedPointElement, createFilmCard(films[i]), `beforeend`);
 }
 
-let filmCountPosition = document.querySelector(`.footer__statistics`);
-filmCountPosition.textContent = COUNT__FILM__CARD;
+let filmCountPositionElement = document.querySelector(`.footer__statistics`);
+filmCountPositionElement.textContent = COUNT__FILM__CARD;

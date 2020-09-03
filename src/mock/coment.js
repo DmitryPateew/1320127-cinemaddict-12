@@ -1,10 +1,10 @@
-import {generateDataFromArray, getRandomInteger} from "../utils.js";
-import {commentGenerate} from "../view/coment.js";
+import {LENGTH__LINE} from "../consant.js";
+import {START__DATE} from "../consant.js";
+import {END__DATE} from "../consant.js";
+import {COUNT__COMMENT} from "../consant.js";
 
-const LENGTH_LINE = 50;
-const START_DATE = new Date(2001, 0, 1);
-const END_DATE = new Date();
-const COUNT__COMMENT = getRandomInteger(1, 10);
+import {generateDataFromArray} from "../utils.js";
+import {commentGenerate} from "../view/coment.js";
 
 function randomChars(length) {
   let result = ``;
@@ -41,8 +41,8 @@ const names = [
 const generateComment = () => {
   return {
     author: generateDataFromArray(names),
-    comment: randomChars(LENGTH_LINE),
-    date: randomDate(START_DATE, END_DATE),
+    comment: randomChars(LENGTH__LINE),
+    date: randomDate(START__DATE, END__DATE),
     emotion: generateDataFromArray(emotions)
   };
 };
