@@ -1,10 +1,11 @@
 import {transleteTimeInHours} from "../utils.js";
+import {createElement} from "../utils";
 
 
-export const createPopUp = (film, comments) => {
+const createPopUp = (film, comments) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, release, runtime, genre, description} = film;
   let normalTime = transleteTimeInHours(runtime);
-  return (`<form class="film-details__inner visually-hidden" action="" method="get">
+  return (`<form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
         <button class="film-details__close-btn" type="button">close</button>
@@ -121,3 +122,26 @@ ${comments}
     </div>
   </form>`);
 };
+
+export default class PopUp {
+  constructor(film, comments) {
+    this._film = film;
+    this._comments = comments;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return (createPopUp(this._film, this._comments));
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

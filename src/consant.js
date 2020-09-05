@@ -10,3 +10,4 @@ export const END__DATE = new Date();
 export const COUNT__COMMENT = getRandomInteger(1, 10);
 
 export const MINUTES__IN__HOURS = 60;
+
