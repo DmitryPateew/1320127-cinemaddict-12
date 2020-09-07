@@ -1,16 +1,17 @@
 import {createElement} from "../utils";
 
-const createShowButton = () => {
-  return (`<button class="films-list__show-more">Show more</button>`);
+
+const createFilmListСontainer = () => {
+  return (`<div class="films-list__container"></div>`);
 };
 
-export default class ShowButton {
+export default class FilmListContainer {
   constructor() {
     this._element = null;
   }
 
   _getTemplate() {
-    return (createShowButton());
+    return (createFilmListСontainer());
   }
 
   getElement() {

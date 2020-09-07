@@ -1,9 +1,10 @@
 import {transleteTimeInHours} from "../utils.js";
+import {createElement} from "../utils";
 
-export const createFilmCard = (film) => {
+const createFilmCard = (film) => {
   const {title, totalRating, poster, runtime, release, genre, description} = film;
   let normalTime = transleteTimeInHours(runtime);
-  return (` <article class="film-card">
+  return (`<article class="film-card">
           <h3 class="film-card__title">${title}</h3>
           <p class="film-card__rating">${totalRating}</p>
           <p class="film-card__info">
@@ -21,3 +22,25 @@ export const createFilmCard = (film) => {
           </form>
         </article>`);
 };
+
+export default class FilmCard {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return (createFilmCard(this._film));
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

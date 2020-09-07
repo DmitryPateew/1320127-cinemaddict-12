@@ -1,4 +1,6 @@
-export const createMenu = (filter) => {
+import {createElement} from "../utils";
+
+const createMenu = (filter) => {
   const {watchlist, alreadyWatched, favorite} = filter;
   return (`<nav class="main-navigation">
     <div class="main-navigation__items">
@@ -10,3 +12,25 @@ export const createMenu = (filter) => {
     <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`);
 };
+
+export default class SiteMenu {
+  constructor(filter) {
+    this._filter = filter;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return createMenu(this._filter);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
