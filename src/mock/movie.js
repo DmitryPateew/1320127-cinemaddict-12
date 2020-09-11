@@ -1,5 +1,5 @@
-import {getRandomInteger} from "../utils.js";
-import {generateDataFromArray} from "../utils.js";
+import {getRandomInteger} from "../utils/common";
+import {generateDataFromArray} from "../utils/film";
 
 const titles = [
   `Made-for-each-other`,

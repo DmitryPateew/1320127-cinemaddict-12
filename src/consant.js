@@ -1,4 +1,4 @@
-import {getRandomInteger} from "./utils";
+import {getRandomInteger} from "./utils/common";
 
 export const COUNT__FILM__CARD = 21;
 export const COUNT_MOST_COMMENTED_FILM = 2;
@@ -11,3 +11,8 @@ export const COUNT__COMMENT = getRandomInteger(1, 10);
 
 export const MINUTES__IN__HOURS = 60;
 
+export const SortType = {
+  DEFAULT: `default`,
+  DATE_UP: `date-up`,
+  RATING_UP: `rating-up`
+};

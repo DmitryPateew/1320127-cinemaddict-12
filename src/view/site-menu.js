@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import Abstract from "./abstract";
 
 const createMenu = (filter) => {
   const {watchlist, alreadyWatched, favorite} = filter;
@@ -13,24 +13,13 @@ const createMenu = (filter) => {
   </nav>`);
 };
 
-export default class SiteMenu {
+export default class SiteMenu extends Abstract {
   constructor(filter) {
+    super();
     this._filter = filter;
-    this._element = null;
   }
 
   _getTemplate() {
     return createMenu(this._filter);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import Abstract from "./abstract";
 
 const createUserTitle = () => {
   return (`<section class="header__profile profile">
@@ -7,23 +7,8 @@ const createUserTitle = () => {
   </section>`);
 };
 
-export default class UserTitle {
-  constructor() {
-    this._element = null;
-  }
-
+export default class UserTitle extends Abstract {
   _getTemplate() {
     return (createUserTitle());
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

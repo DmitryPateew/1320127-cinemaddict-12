@@ -3,7 +3,7 @@ import {START__DATE} from "../consant.js";
 import {END__DATE} from "../consant.js";
 import {COUNT__COMMENT} from "../consant.js";
 
-import {generateDataFromArray} from "../utils.js";
+import {generateDataFromArray} from "../utils/film";
 import {commentGenerate} from "../view/coment.js";
 
 function randomChars(length) {
