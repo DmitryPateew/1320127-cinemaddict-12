@@ -1,5 +1,5 @@
-import {transleteTimeInHours} from "../utils.js";
-import {createElement} from "../utils";
+import {transleteTimeInHours} from "../utils/film";
+import Abstract from "./abstract";
 
 const createFilmCard = (film) => {
   const {title, totalRating, poster, runtime, release, genre, description} = film;
@@ -23,24 +23,22 @@ const createFilmCard = (film) => {
         </article>`);
 };
 
-export default class FilmCard {
+export default class FilmCard extends Abstract {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   _getTemplate() {
     return (createFilmCard(this._film));
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-    return this._element;
+  _clickHandler(callback, evt) {
+    evt.preventDefault();
+    callback();
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(callback) {
+    this.getElement().addEventListener(`click`, this._clickHandler.bind(this, callback));
   }
 }

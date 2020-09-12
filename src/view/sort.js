@@ -1,29 +1,33 @@
-import {createElement} from "../utils";
+import Abstract from "./abstract";
+import {SortType} from "../consant";
 
 const createSort = () => {
   return (`<ul class="sort">
-    <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-    <li><a href="#" class="sort__button">Sort by date</a></li>
-    <li><a href="#" class="sort__button">Sort by rating</a></li>
+    <li><a href="#" class="sort__button sort__button--active" data-sort-type="${SortType.DEFAULT}">Sort by default</a></li>
+    <li><a href="#" class="sort__button" data-sort-type="${SortType.DATE_UP}">Sort by date</a></li>
+    <li><a href="#" class="sort__button" data-sort-type="${SortType.RATING_UP}">Sort by rating</a></li>
   </ul>`);
 };
 
-export default class Sort {
+export default class Sort extends Abstract {
   constructor() {
-    this._element = null;
+    super();
+    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
-
   _getTemplate() {
     return createSort();
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
+  _sortTypeChangeHandler(evt) {
+    if (evt.target.tagName !== `A`) {
+      return;
     }
-    return this._element;
+
+    evt.preventDefault();
+    this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
-  removeElement() {
-    this._element = null;
+
+  setSortTypeChangeHandler(callback) {
+    this._callback.sortTypeChange = callback;
+    this.getElement().addEventListener(`click`, this._sortTypeChangeHandler);
   }
 }

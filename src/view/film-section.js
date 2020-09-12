@@ -1,26 +1,11 @@
-import {createElement} from "../utils";
+import Abstract from "./abstract";
 
 const createFilmSection = () => {
   return (`<section class="films"></section>`);
 };
 
-export default class FilmSection {
-  constructor() {
-    this._element = null;
-  }
-
+export default class FilmSection extends Abstract {
   _getTemplate() {
     return (createFilmSection());
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

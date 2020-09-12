@@ -1,5 +1,5 @@
-import {transleteTimeInHours} from "../utils.js";
-import {createElement} from "../utils";
+import {transleteTimeInHours} from "../utils/film";
+import Abstract from "./abstract";
 
 
 const createPopUp = (film, comments) => {
@@ -123,25 +123,23 @@ ${comments}
   </form>`);
 };
 
-export default class PopUp {
+export default class PopUp extends Abstract {
   constructor(film, comments) {
+    super();
     this._film = film;
     this._comments = comments;
-    this._element = null;
   }
 
   _getTemplate() {
     return (createPopUp(this._film, this._comments));
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-    return this._element;
+  _clickHandler(callback, evt) {
+    evt.preventDefault();
+    callback();
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(callback) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler.bind(this, callback));
   }
 }
