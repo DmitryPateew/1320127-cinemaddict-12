@@ -1,6 +1,3 @@
-import {generateListComments} from "../mock/coment";
-import FilmCardView from "../view/film-card";
-import PopUpView from "../view/pop-up";
 import {render} from "../utils/render";
 import FilmListContainerView from "../view/film-list-container";
 import NoFilm from "../view/no-Film";
@@ -14,11 +11,12 @@ import ComentedListSectionView from "../view/comented-list-section";
 import FilmListSectionView from "../view/film-list-section";
 import SortView from "../view/sort";
 import {sortFilmUp, sortFilmUpRating} from "../utils/film";
+import {updateItem} from "../utils/common";
+import FilmPresenter from "./film";
 
 export default class Board {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
-
     this._filmListContainerView = new FilmListContainerView();
     this._noFilmComponent = new NoFilm();
     this._filmListContainerView = new FilmListContainerView();
@@ -30,6 +28,8 @@ export default class Board {
     this._containerForComented = new FilmListContainerView();
     this._sortView = new SortView();
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._filmPresenter = {};
+    this._handleFilmChange = this._handleFilmChange.bind(this);
   }
 
   init(boardFilms) {
@@ -57,6 +57,13 @@ export default class Board {
     this._currentSortType = sortType;
   }
 
+  _handleFilmChange(updatedFilm) {
+    this._boardFilms = updateItem(this._boardFilms, updatedFilm);
+    this._sourcedBoardFilms = updateItem(this._sourcedBoardFilms, updatedFilm);
+    this._filmPresenter[updatedFilm.id].init(updatedFilm);
+  }
+
+
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
@@ -74,6 +81,10 @@ export default class Board {
 
   _clearFilmList() {
     this._filmListContainerView.getElement().innerHTML = ``;
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._filmPresenter = {};
   }
 
   _renderFilms(from, to) {
@@ -83,18 +94,9 @@ export default class Board {
   }
 
   _renderFilm(film, position) {
-    const comments = generateListComments();
-    const filmComponent = new FilmCardView(film);
-    const filmPopUp = new PopUpView(film, comments);
-
-    filmComponent.setClickHandler(() => {
-      let exectPopup = filmPopUp.getElement();
-      render(position, exectPopup);
-      filmPopUp.setClickHandler(() => {
-        exectPopup.remove();
-      });
-    });
-    render(position, filmComponent);
+    const filmPresenter = new FilmPresenter(position, this._handleFilmChange, this._handleModeChange);
+    filmPresenter.init(film);
+    this._filmPresenter[film.id] = filmPresenter;
   }
 
   _renderNoFilm() {
@@ -157,5 +159,4 @@ export default class Board {
       this._renderShowButton();
     }
   }
-
 }
