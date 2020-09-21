@@ -1,6 +1,8 @@
 import FilmCardView from "../view/film-card";
 import PopUpView from "../view/pop-up";
-import {render, remove} from "../utils/render";
+import {render} from "../utils/render";
+import {remove} from "../view/abstract";
+import {UserAction, UpdateType} from "../consant";
 
 export default class Film {
   constructor(position, changeData) {
@@ -29,7 +31,7 @@ export default class Film {
     this._filmComponent.setWatchClickHandler(this._handleWatchClick);
 
     this._filmComponent.setClickHandler(() => {
-      let exectPopup = this._filmPopUp.getElement();
+      const exectPopup = this._filmPopUp.getElement();
       render(this._position, exectPopup);
       this._filmPopUp.setEmojiHandler(() => {
       });
@@ -62,15 +64,15 @@ export default class Film {
 
 
   _handleFavoriteClick() {
-    this._changeData(Object.assign({}, this._film, {favorite: !this._film.favorite}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, Object.assign({}, this._film, {favorite: !this._film.favorite}));
   }
 
   _handleHistoryClick() {
-    this._changeData(Object.assign({}, this._film, {history: !this._film.history}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, Object.assign({}, this._film, {history: !this._film.history}));
   }
 
   _handleWatchClick() {
-    this._changeData(Object.assign({}, this._film, {watch: !this._film.watch}));
+    this._changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, Object.assign({}, this._film, {watch: !this._film.watch}));
   }
 
   destroy() {

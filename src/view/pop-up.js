@@ -1,6 +1,8 @@
 import {transleteTimeInHours} from "../utils/film";
 import Abstract from "./abstract";
 import {commentGenerate} from "./coment";
+import {EMOJI__SIZE} from "../consant";
+
 
 const newComment = {
   author: `test`,
@@ -10,7 +12,7 @@ const newComment = {
 };
 
 const createPopUp = (film) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, release, runtime, genre, description, comment} = film;
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, release, runtime, genre, description, comments} = film;
   let normalTime = transleteTimeInHours(runtime);
   return (`<form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
@@ -90,10 +92,10 @@ const createPopUp = (film) => {
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comment.length}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
-${comment}
+${comments}
         </ul>
 
         <div class="film-details__new-comment">
@@ -172,8 +174,8 @@ export default class PopUp extends Abstract {
     callback();
     const emojiBlockElement = evt.currentTarget.closest(`.film-details__new-comment`).querySelector(`.film-details__add-emoji-label`);
     let img = document.createElement(`img`);
-    img.width = 60;
-    img.heigth = 60;
+    img.width = EMOJI__SIZE;
+    img.heigth = EMOJI__SIZE;
     img.src = `./images/emoji/` + evt.target.value + `.png`;
     emojiBlockElement.innerHTML = ``;
     emojiBlockElement.append(img);
@@ -205,5 +207,13 @@ export default class PopUp extends Abstract {
 
   setSubmitHandler(callback) {
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._submitHandler.bind(this, callback));
+  }
+
+  _deleteHandler(callback) {
+    callback();
+  }
+
+  setDeleteHandler(callback) {
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`click`, this._deleteHandler.bind(this, callback));
   }
 }

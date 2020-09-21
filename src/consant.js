@@ -16,3 +16,24 @@ export const SortType = {
   DATE_UP: `date-up`,
   RATING_UP: `rating-up`
 };
+
+export const UserAction = {
+  UPDATE_FILM: `UPDATE_FILM`,
+  ADD_FILM: `ADD_FILM`,
+  DELETE_FILM: `DELETE_FILM`
+};
+
+export const UpdateType = {
+  PATCH: `PATCH`,
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+
+export const FilterType = {
+  ALL: `All`,
+  WATCHLIST: `WatchList`,
+  HISTORY: `Today`,
+  FAVORITES: `Favorites`,
+};
+
+export const EMOJI__SIZE = 60;

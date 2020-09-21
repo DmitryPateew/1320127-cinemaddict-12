@@ -123,6 +123,6 @@ export const generateMovie = () => {
     runtime: getRandomInteger(70, 130),
     genre: generateArrayForObject(genres),
     description: generateDescription(),
-    comment: generateListComments(),
+    comments: generateListComments(),
   };
 };
