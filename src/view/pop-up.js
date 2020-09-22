@@ -1,9 +1,18 @@
 import {transleteTimeInHours} from "../utils/film";
 import Abstract from "./abstract";
+import {commentGenerate} from "./coment";
+import {EMOJI__SIZE} from "../consant";
 
 
-const createPopUp = (film, comments) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, release, runtime, genre, description} = film;
+const newComment = {
+  author: `test`,
+  comment: null,
+  date: null,
+  emotion: null
+};
+
+const createPopUp = (film) => {
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, release, runtime, genre, description, comments} = film;
   let normalTime = transleteTimeInHours(runtime);
   return (`<form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
@@ -83,7 +92,7 @@ const createPopUp = (film, comments) => {
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
 ${comments}
@@ -124,22 +133,87 @@ ${comments}
 };
 
 export default class PopUp extends Abstract {
-  constructor(film, comments) {
+  constructor(film) {
     super();
     this._film = film;
-    this._comments = comments;
   }
 
   _getTemplate() {
-    return (createPopUp(this._film, this._comments));
+    return (createPopUp(this._film));
   }
+
 
   _clickHandler(callback, evt) {
     evt.preventDefault();
     callback();
   }
 
+
   setClickHandler(callback) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._clickHandler.bind(this, callback));
+  }
+
+  _updateElement() {
+    let prevEl = this.getElement().querySelector(`.film-details__comments-list`);
+    this.getElement().querySelector(`.film-details__comments-count`).innerText = this._film.comment.length;
+    this.getElement().querySelector(`.film-details__comment-input`).value = ``;
+    const selectedEmogi = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    selectedEmogi.removeChild(selectedEmogi.children[0]);
+    while (prevEl.firstChild) {
+      prevEl.removeChild(prevEl.firstChild);
+    }
+    prevEl.innerHTML = this._film.comment;
+  }
+
+  resetView() {
+    this.removeElement();
+  }
+
+  _emojiHandler(callback, evt) {
+    evt.preventDefault();
+    callback();
+    const emojiBlockElement = evt.currentTarget.closest(`.film-details__new-comment`).querySelector(`.film-details__add-emoji-label`);
+    let img = document.createElement(`img`);
+    img.width = EMOJI__SIZE;
+    img.heigth = EMOJI__SIZE;
+    img.src = `./images/emoji/` + evt.target.value + `.png`;
+    emojiBlockElement.innerHTML = ``;
+    emojiBlockElement.append(img);
+    newComment.emotion = evt.target.value;
+  }
+
+  setEmojiHandler(callback) {
+    this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`change`, this._emojiHandler.bind(this, callback));
+  }
+
+  _textHandler(callback, evt) {
+    evt.preventDefault();
+    callback();
+    newComment.comment = evt.target.value;
+  }
+
+  setTextHandler(callback) {
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`input`, this._textHandler.bind(this, callback));
+  }
+
+  _submitHandler(callback, evt) {
+    callback();
+    if (evt.key === `Enter` && evt.ctrlKey) {
+      newComment.date = new Date();
+      this._film.comment.push(commentGenerate(newComment));
+      this._updateElement();
+    }
+  }
+
+  setSubmitHandler(callback) {
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._submitHandler.bind(this, callback));
+  }
+
+  _deleteHandler(callback) {
+    callback();
+  }
+
+  setDeleteHandler(callback) {
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`click`, this._deleteHandler.bind(this, callback));
   }
 }

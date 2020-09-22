@@ -14,9 +14,11 @@ export default class Sort extends Abstract {
     super();
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
+
   _getTemplate() {
     return createSort();
   }
+
   _sortTypeChangeHandler(evt) {
     if (evt.target.tagName !== `A`) {
       return;
@@ -24,6 +26,8 @@ export default class Sort extends Abstract {
 
     evt.preventDefault();
     this._callback.sortTypeChange(evt.target.dataset.sortType);
+    this.getElement().querySelectorAll(`.sort__button`).forEach((button) => button.classList.remove(`sort__button--active`));
+    evt.target.classList.add(`sort__button--active`);
   }
 
   setSortTypeChangeHandler(callback) {

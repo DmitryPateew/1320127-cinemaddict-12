@@ -1,5 +1,8 @@
 import {getRandomInteger} from "../utils/common";
 import {generateDataFromArray} from "../utils/film";
+import {generateListComments} from "./coment";
+
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const titles = [
   `Made-for-each-other`,
@@ -101,6 +104,10 @@ const generateDescription = () => {
 
 export const generateMovie = () => {
   return {
+    id: generateId(),
+    favorite: false,
+    history: false,
+    watch: false,
     title: generateDataFromArray(titles),
     alternativeTitle: generateDataFromArray(titles),
     totalRating: getRandomInteger(1, 10),
@@ -116,5 +123,6 @@ export const generateMovie = () => {
     runtime: getRandomInteger(70, 130),
     genre: generateArrayForObject(genres),
     description: generateDescription(),
+    comments: generateListComments(),
   };
 };

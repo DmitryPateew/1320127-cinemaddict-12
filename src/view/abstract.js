@@ -25,3 +25,12 @@ export default class Abstract {
     this._element = null;
   }
 }
+
+export const remove = (component) => {
+  if (!(component instanceof Abstract)) {
+    throw new Error(`Can remove only components`);
+  }
+
+  component.getElement().remove();
+  component.removeElement();
+};
