@@ -29,13 +29,13 @@ const getWeightForNullDate = (dateA, dateB) => {
 };
 
 export const sortFilmUp = (filmA, filmB) => {
-  const weight = getWeightForNullDate(filmA.release.date, filmB.release.date);
+  const weight = getWeightForNullDate(filmA.date, filmB.date);
 
   if (weight !== null) {
     return weight;
   }
 
-  return filmB.release.date - filmA.release.date;
+  return filmB.date - filmA.date;
 };
 
 export const sortFilmUpRating = (filmA, filmB) => {

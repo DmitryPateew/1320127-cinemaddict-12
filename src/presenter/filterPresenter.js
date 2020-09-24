@@ -1,10 +1,10 @@
-import FilterView from "../view/site-menu";
-import {remove} from "../view/abstract";
+import FilterView from "../view/siteMenuView";
+import {remove} from "../view/abstractView";
 import {render, replace} from "../utils/render";
 import {filter} from "../utils/filtr";
 import {FilterType, UpdateType} from "../consant";
 
-export default class Filter {
+export default class FilterPresenter {
   constructor(filterContainer, filterModel, filmsModel) {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
@@ -64,7 +64,7 @@ export default class Filter {
       },
       {
         type: FilterType.HISTORY,
-        name: `Today`,
+        name: `History`,
         count: filter[FilterType.HISTORY](films).length
       },
       {

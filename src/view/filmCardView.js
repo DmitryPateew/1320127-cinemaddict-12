@@ -1,18 +1,17 @@
-import {transleteTimeInHours} from "../utils/film";
-import Abstract from "./abstract";
+import AbstractView from "./abstractView";
+import {formatFilmTime, formatReleaseDate} from "../utils/dateFormat";
 
 const createFilmCard = (film) => {
-  const {title, totalRating, poster, runtime, release, genre, description, comments} = film;
-  let normalTime = transleteTimeInHours(runtime);
+  const {title, totalRating, poster, runtime, date, genre, description, comments} = film;
   return (`<article class="film-card">
           <h3 class="film-card__title">${title}</h3>
           <p class="film-card__rating">${totalRating}</p>
           <p class="film-card__info">
-            <span class="film-card__year">${release.date}</span>
-            <span class="film-card__duration">${normalTime}</span>
+            <span class="film-card__year">${formatReleaseDate(date)}</span>
+            <span class="film-card__duration">${formatFilmTime(runtime)}</span>
             <span class="film-card__genre">${genre}</span>
           </p>
-          <img src="./images/posters/${poster}" alt="" class="film-card__poster">
+          <img src="${poster}" alt="" class="film-card__poster">
           <p class="film-card__description">${description}</p>
           <a class="film-card__comments">${comments.length} comments</a>
           <form class="film-card__controls">
@@ -23,10 +22,11 @@ const createFilmCard = (film) => {
         </article>`);
 };
 
-export default class FilmCard extends Abstract {
+export default class FilmCardView extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+
   }
 
   _getTemplate() {
@@ -40,6 +40,9 @@ export default class FilmCard extends Abstract {
 
   setClickHandler(callback) {
     this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._clickHandler.bind(this, callback));
+    this.getElement().querySelector(`.film-card__title`).style.cursor = `pointer`;
+    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._clickHandler.bind(this, callback));
+    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, this._clickHandler.bind(this, callback));
   }
 
   setFavoriteClickHandler(callback) {

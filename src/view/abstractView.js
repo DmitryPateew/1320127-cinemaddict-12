@@ -1,8 +1,8 @@
 import {createElement} from "../utils/render";
 
-export default class Abstract {
+export default class AbstractView {
   constructor() {
-    if (new.target === Abstract) {
+    if (new.target === AbstractView) {
       throw new Error(`Can't instantiate Abstract, only concrete one.`);
     }
 
@@ -27,7 +27,7 @@ export default class Abstract {
 }
 
 export const remove = (component) => {
-  if (!(component instanceof Abstract)) {
+  if (!(component instanceof AbstractView)) {
     throw new Error(`Can remove only components`);
   }
 

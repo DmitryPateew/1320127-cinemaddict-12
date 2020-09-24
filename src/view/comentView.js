@@ -1,7 +1,9 @@
 import {formatCommentDate} from "../utils/dateFormat";
 import he from "he";
+import AbstractView from "./abstractView";
+import {createElement} from "../utils/render";
 
-export const commentGenerate = (commentData) => {
+const _commentGenerate = (commentData) => {
   const {author, comment, date, emotion} = commentData;
   return (`  <li class="film-details__comment">
             <span class="film-details__comment-emoji">
@@ -17,3 +19,22 @@ export const commentGenerate = (commentData) => {
             </div>
           </li>`);
 };
+
+export default class Comment extends AbstractView {
+  constructor(comment) {
+    super();
+    this._comment = comment;
+  }
+
+  _getTemplate() {
+    return (_commentGenerate(this._comment));
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+    return this._element;
+  }
+
+}

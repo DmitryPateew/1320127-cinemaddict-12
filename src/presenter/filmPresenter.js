@@ -1,10 +1,10 @@
-import FilmCardView from "../view/film-card";
-import PopUpView from "../view/pop-up";
+import FilmCardView from "../view/filmCardView";
+import PopUpView from "../view/popUpView";
 import {render} from "../utils/render";
-import {remove} from "../view/abstract";
+import {remove} from "../view/abstractView";
 import {UserAction, UpdateType} from "../consant";
 
-export default class Film {
+export default class FilmPresenter {
   constructor(position, changeData) {
     this._position = position;
 
@@ -14,7 +14,7 @@ export default class Film {
 
     this._changeData = changeData;
     this._filmComponent = null;
-    this._filmPopUp = null;
+    this._filmPopUpComponent = null;
   }
 
 
@@ -22,26 +22,26 @@ export default class Film {
     this._film = film;
 
     const prevFilmComponent = this._filmComponent;
-    const prevFilmPupUp = this._filmPopUp;
+    const prevFilmPupUp = this._filmPopUpComponent;
 
     this._filmComponent = new FilmCardView(film);
-    this._filmPopUp = new PopUpView(film);
+    this._filmPopUpComponent = new PopUpView(film);
     this._filmComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._filmComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._filmComponent.setWatchClickHandler(this._handleWatchClick);
 
     this._filmComponent.setClickHandler(() => {
-      const exectPopup = this._filmPopUp.getElement();
-      render(this._position, exectPopup);
-      this._filmPopUp.setEmojiHandler(() => {
+      const exactPopup = this._filmPopUpComponent.getElement();
+      render(this._position, exactPopup);
+      this._filmPopUpComponent.setEmojiHandler(() => {
       });
-      this._filmPopUp.setClickHandler(() => {
-        exectPopup.remove();
+      this._filmPopUpComponent.setClickHandler(() => {
+        exactPopup.remove();
       });
-      this._filmPopUp.setSubmitHandler(() => {
-        this._filmPopUp = new PopUpView(film);
+      this._filmPopUpComponent.setSubmitHandler(() => {
+        this._filmPopUpComponent = new PopUpView(film);
       });
-      this._filmPopUp.setTextHandler(() => {
+      this._filmPopUpComponent.setTextHandler(() => {
       });
     });
 
@@ -56,12 +56,9 @@ export default class Film {
     if (this._position.getElement().contains(prevFilmPupUp.getElement())) {
       return;
     }
-
-
     remove(prevFilmComponent);
     remove(prevFilmPupUp);
   }
-
 
   _handleFavoriteClick() {
     this._changeData(UserAction.UPDATE_FILM, UpdateType.MINOR, Object.assign({}, this._film, {favorite: !this._film.favorite}));
@@ -77,8 +74,6 @@ export default class Film {
 
   destroy() {
     remove(this._filmComponent);
-    remove(this._filmPopUp);
+    remove(this._filmPopUpComponent);
   }
-
 }
-
