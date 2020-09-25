@@ -1,10 +1,10 @@
-import Abstract from "./abstract";
+import AbstractView from "./abstractView";
 
 const createShowButton = () => {
   return (`<button class="films-list__show-more">Show more</button>`);
 };
 
-export default class ShowButton extends Abstract {
+export default class ShowButtonView extends AbstractView {
   constructor() {
     super();
   }

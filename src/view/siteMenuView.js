@@ -1,9 +1,9 @@
-import Abstract from "./abstract";
+import AbstractView from "./abstractView";
 
 const createMenuItemTemplate = (filter, currentFilterType) => {
   const {type, name, count} = filter;
   return (`
-      <a href="${name}"  class="main-navigation__item ${type === currentFilterType ? `main-navigation__item--active` : ``} ">${name}
+      <a href="${name}"  data-name="${name}" class="main-navigation__item ${type === currentFilterType ? `main-navigation__item--active` : ``} ">${name}
       ${name === `All` ? `` : `<span class="main-navigation__item-count">${count}</span>`}
     </a>
   `);
@@ -24,7 +24,7 @@ const createMenuTemplate = (menuItems, currentFilterType) => {
   );
 };
 
-export default class SiteMenu extends Abstract {
+export default class SiteMenuView extends AbstractView {
   constructor(filters, currentFilterType) {
     super();
     this._filters = filters;
@@ -39,8 +39,7 @@ export default class SiteMenu extends Abstract {
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
-    const type = evt.target.href.split(`/`);
-    this._callback.filterTypeChange(type[3]);
+    this._callback.filterTypeChange(evt.target.dataset.name);
   }
 
   setFilterTypeChangeHandler(callback) {

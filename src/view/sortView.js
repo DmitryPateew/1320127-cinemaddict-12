@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import AbstractView from "./abstractView";
 import {SortType} from "../consant";
 
 const createSort = () => {
@@ -9,7 +9,7 @@ const createSort = () => {
   </ul>`);
 };
 
-export default class Sort extends Abstract {
+export default class SortView extends AbstractView {
   constructor() {
     super();
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);

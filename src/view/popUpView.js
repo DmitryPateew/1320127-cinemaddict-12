@@ -1,18 +1,18 @@
 import {transleteTimeInHours} from "../utils/film";
-import Abstract from "./abstract";
-import {commentGenerate} from "./coment";
+import AbstractView from "./abstractView";
+import {commentGenerate} from "./comentView";
 import {EMOJI__SIZE} from "../consant";
 
 
 const newComment = {
-  author: `test`,
+  author: ``,
   comment: null,
   date: null,
   emotion: null
 };
 
 const createPopUp = (film) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, release, runtime, genre, description, comments} = film;
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, date, countries, runtime, genre, description, comments} = film;
   let normalTime = transleteTimeInHours(runtime);
   return (`<form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
@@ -21,7 +21,7 @@ const createPopUp = (film) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
+          <img class="film-details__poster-img" src="${poster}" alt="">
 
           <p class="film-details__age">${ageRating}</p>
         </div>
@@ -53,7 +53,7 @@ const createPopUp = (film) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${release.date}</td>
+              <td class="film-details__cell">${date}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
@@ -61,7 +61,7 @@ const createPopUp = (film) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${release.releaseCountry}</td>
+              <td class="film-details__cell">${countries}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
@@ -132,7 +132,7 @@ ${comments}
   </form>`);
 };
 
-export default class PopUp extends Abstract {
+export default class PopUpView extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
@@ -154,15 +154,15 @@ export default class PopUp extends Abstract {
   }
 
   _updateElement() {
-    let prevEl = this.getElement().querySelector(`.film-details__comments-list`);
+    let prevElement = this.getElement().querySelector(`.film-details__comments-list`);
     this.getElement().querySelector(`.film-details__comments-count`).innerText = this._film.comment.length;
     this.getElement().querySelector(`.film-details__comment-input`).value = ``;
-    const selectedEmogi = this.getElement().querySelector(`.film-details__add-emoji-label`);
-    selectedEmogi.removeChild(selectedEmogi.children[0]);
-    while (prevEl.firstChild) {
-      prevEl.removeChild(prevEl.firstChild);
+    const selectedEmojiElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    selectedEmojiElement.removeChild(selectedEmojiElement.children[0]);
+    while (prevElement.firstChild) {
+      prevElement.removeChild(prevElement.firstChild);
     }
-    prevEl.innerHTML = this._film.comment;
+    prevElement.innerHTML = this._film.comment;
   }
 
   resetView() {

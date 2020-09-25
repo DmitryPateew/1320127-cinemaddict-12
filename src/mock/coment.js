@@ -1,10 +1,9 @@
 import {LENGTH__LINE} from "../consant.js";
 import {START__DATE} from "../consant.js";
 import {END__DATE} from "../consant.js";
-import {COUNT__COMMENT} from "../consant.js";
 
 import {generateDataFromArray} from "../utils/film";
-import {commentGenerate} from "../view/coment.js";
+import CommentView from "../view/comentView.js";
 
 function randomChars(length) {
   let result = ``;
@@ -38,7 +37,7 @@ const names = [
   `Benjamin`,
 ];
 
-const generateComment = () => {
+export const generateComment = () => {
   return {
     author: generateDataFromArray(names),
     comment: randomChars(LENGTH__LINE),
@@ -47,12 +46,12 @@ const generateComment = () => {
   };
 };
 
-const comments = new Array(COUNT__COMMENT).fill().map(generateComment);
 
 export const generateListComments = () => {
-  let commentsLine = [];
-  for (let i = 0; i < comments.length; i++) {
-    commentsLine.push(commentGenerate(comments[i]));
+  const commentsLine = [];
+  for (let i = 0; i < 5; i++) {
+    const exeactComment = new CommentView(generateComment());
+    commentsLine.push(exeactComment.getElement());
   }
   return commentsLine;
 };
