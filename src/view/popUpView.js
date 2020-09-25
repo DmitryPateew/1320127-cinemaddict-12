@@ -5,7 +5,7 @@ import {EMOJI__SIZE} from "../consant";
 
 
 const newComment = {
-  author: `test`,
+  author: ``,
   comment: null,
   date: null,
   emotion: null
@@ -154,15 +154,15 @@ export default class PopUpView extends AbstractView {
   }
 
   _updateElement() {
-    let prevEl = this.getElement().querySelector(`.film-details__comments-list`);
+    let prevElement = this.getElement().querySelector(`.film-details__comments-list`);
     this.getElement().querySelector(`.film-details__comments-count`).innerText = this._film.comment.length;
     this.getElement().querySelector(`.film-details__comment-input`).value = ``;
-    const selectedEmogi = this.getElement().querySelector(`.film-details__add-emoji-label`);
-    selectedEmogi.removeChild(selectedEmogi.children[0]);
-    while (prevEl.firstChild) {
-      prevEl.removeChild(prevEl.firstChild);
+    const selectedEmojiElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    selectedEmojiElement.removeChild(selectedEmojiElement.children[0]);
+    while (prevElement.firstChild) {
+      prevElement.removeChild(prevElement.firstChild);
     }
-    prevEl.innerHTML = this._film.comment;
+    prevElement.innerHTML = this._film.comment;
   }
 
   resetView() {

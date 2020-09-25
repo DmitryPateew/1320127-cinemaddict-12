@@ -31,18 +31,16 @@ export default class FilmPresenter {
     this._filmComponent.setWatchClickHandler(this._handleWatchClick);
 
     this._filmComponent.setClickHandler(() => {
-      const exactPopup = this._filmPopUpComponent.getElement();
-      render(this._position, exactPopup);
-      this._filmPopUpComponent.setEmojiHandler(() => {
-      });
+      const exactPopUpElement = this._filmPopUpComponent.getElement();
+      render(this._position, exactPopUpElement);
+      this._filmPopUpComponent.setEmojiHandler();
       this._filmPopUpComponent.setClickHandler(() => {
-        exactPopup.remove();
+        exactPopUpElement.remove();
       });
       this._filmPopUpComponent.setSubmitHandler(() => {
         this._filmPopUpComponent = new PopUpView(film);
       });
-      this._filmPopUpComponent.setTextHandler(() => {
-      });
+      this._filmPopUpComponent.setTextHandler();
     });
 
     if (prevFilmComponent === null || prevFilmPupUp === null) {
