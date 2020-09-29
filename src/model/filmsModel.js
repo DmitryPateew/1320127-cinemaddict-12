@@ -71,7 +71,7 @@ export default class FilmsModel extends Observer {
           writers: film.film_info.writers,
           actors: film.film_info.actors,
           date: new Date(film.film_info.release.date),
-          runtime: new Date(film.film_info.runtime),
+          runtime: film.film_info.runtime,
           genres: film.film_info.genre,
           countries: [film.film_info.release.release_country],
           description: film.film_info.description,
@@ -80,7 +80,8 @@ export default class FilmsModel extends Observer {
           history: film.user_details.already_watched,
           favorite: film.user_details.favorite,
           totalRating: film.film_info.total_rating,
-          comments: film.comments
+          comments: film.comments,
+          watchingDate: film.user_details.watching_date
         }
     );
     delete adaptedFilm.film_info;

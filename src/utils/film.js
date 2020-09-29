@@ -47,3 +47,5 @@ export const sortFilmUpRating = (filmA, filmB) => {
 
   return filmB.totalRating - filmA.totalRating;
 };
+
+export const generateId = () => Math.random().toString(36).substr(2, 9);

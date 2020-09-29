@@ -72,6 +72,10 @@ export default class FilterPresenter {
         name: `Favorites`,
         count: filter[FilterType.FAVORITES](films).length
       },
+      {
+        type: FilterType.STATS,
+        name: `Stats`
+      },
     ];
   }
 }

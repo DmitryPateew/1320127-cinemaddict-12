@@ -1,4 +1,5 @@
 import {createElement} from "../utils/render";
+import {SHAKE_ANIMATION_TIMEOUT} from "../consant";
 
 export default class AbstractView {
   constructor() {
@@ -24,7 +25,16 @@ export default class AbstractView {
   removeElement() {
     this._element = null;
   }
+
+  shake(callback) {
+    this.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    setTimeout(() => {
+      this.getElement().style.animation = ``;
+      callback();
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
 }
+
 
 export const remove = (component) => {
   if (!(component instanceof AbstractView)) {

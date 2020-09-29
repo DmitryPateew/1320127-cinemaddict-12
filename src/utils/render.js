@@ -1,7 +1,6 @@
 import AbstractView from "../view/abstractView";
 
 export const createElement = (template) => {
-
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
   return newElement.firstChild;

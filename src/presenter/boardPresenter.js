@@ -3,7 +3,7 @@ import FilmListContainerView from "../view/filmListContainerView";
 import NoFilmView from "../view/noFilmView";
 import {FILM_PER_STEP, SortType, UpdateType, UserAction} from "../consant";
 import ShowButtonView from "../view/showButtonView";
-import {COUNT_MOST_COMMENTED_FILM} from "../consant";
+import {COUNT_MOST_COMMENTED_FILM, FilterType} from "../consant";
 import TopListSectionView from "../view/topListSectionView";
 import CommentedListSectionView from "../view/commentedListSectionView";
 import FilmListSectionView from "../view/filmListSectionView";
@@ -13,9 +13,11 @@ import FilmPresenter from "./filmPresenter";
 import {remove} from "../view/abstractView";
 import {filter} from "../utils/filtr";
 import LoadingView from "../view/loadingView";
+import StatisticsPresenter from "./statisticPresenter";
 
 export default class BoardPresenter {
-  constructor(boardContainer, filmsModel, filterModel, api) {
+  constructor(boardContainer, filmsModel, filterModel, api, mainElement) {
+    this._mainElement = mainElement;
     this._filterModel = filterModel;
     this._filmsModel = filmsModel;
     this._api = api;
@@ -36,9 +38,10 @@ export default class BoardPresenter {
     this._filmPresenter = {};
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-
+    this._handleModeChange = this._handleModeChange.bind(this);
     this._filmsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+    this._statisticsPresenter = null;
   }
 
   init() {
@@ -51,14 +54,31 @@ export default class BoardPresenter {
   _getFilms() {
     const filterType = this._filterModel.getFilter();
     const films = this._filmsModel.getFilms();
-    const filteredFilms = filter[filterType](films);
-    switch (this._currentSortType) {
-      case SortType.DATE_UP:
-        return filteredFilms.sort(sortFilmUp);
-      case SortType.RATING_UP:
-        return filteredFilms.sort(sortFilmUpRating);
+    if (filterType === FilterType.STATS) {
+      document.querySelector(`.films`).classList.add(`visually-hidden`);
+      if (this._statisticsPresenter === null) {
+        this._statisticsPresenter = new StatisticsPresenter(this._mainElement, this._filmsModel);
+        this._statisticsPresenter.init();
+        return films;
+      } else {
+        return films;
+      }
+    } else {
+      document.querySelector(`.films`).classList.remove(`visually-hidden`);
+      if (this._statisticsPresenter !== null) {
+        this._statisticsPresenter.destroy();
+        this._statisticsPresenter = null;
+      }
+      const filteredFilms = filter[filterType](films);
+      switch (this._currentSortType) {
+        case SortType.DATE_UP:
+          return filteredFilms.sort(sortFilmUp);
+        case SortType.RATING_UP:
+          return filteredFilms.sort(sortFilmUpRating);
+      }
+      return filteredFilms;
     }
-    return filteredFilms;
+
   }
 
 
@@ -68,12 +88,6 @@ export default class BoardPresenter {
         this._api.updateFilm(update).then((response) => {
           this._filmsModel.updateFilm(updateType, response);
         });
-        break;
-      case UserAction.ADD_FILM:
-        this._filmsModel.addFilm(updateType, update);
-        break;
-      case UserAction.DELETE_FILM:
-        this._filmsModel.deleteFilm(updateType, update);
         break;
     }
   }
@@ -146,9 +160,19 @@ export default class BoardPresenter {
     films.forEach((film) => this._renderFilm(film, this._filmListContainerComponent));
   }
 
+  _handleModeChange() {
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.resetView());
+  }
+
+
   _renderFilm(film, position) {
-    const filmPresenter = new FilmPresenter(position, this._handleViewAction, this._handleViewAction);
+
+    const filmPresenter = new FilmPresenter(position, this._handleViewAction, this._handleModeChange, this._api);
+
     filmPresenter.init(film);
+
     this._filmPresenter[film.id] = filmPresenter;
   }
 
@@ -216,6 +240,7 @@ export default class BoardPresenter {
   _renderLoading() {
     render(this._filmListContainerComponent, this._loadingComponent);
   }
+
 
   _renderBoard() {
     if (this._isLoadingComponent) {

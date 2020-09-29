@@ -1,4 +1,5 @@
 import AbstractView from "./abstractView";
+import {STATS__POSITION__IN__ARRAY} from "../consant";
 
 const createMenuItemTemplate = (filter, currentFilterType) => {
   const {type, name, count} = filter;
@@ -10,15 +11,15 @@ const createMenuItemTemplate = (filter, currentFilterType) => {
 };
 
 const createMenuTemplate = (menuItems, currentFilterType) => {
+  const stats = menuItems[STATS__POSITION__IN__ARRAY];
+  menuItems.splice(STATS__POSITION__IN__ARRAY);
   const menuItemsTemplate = menuItems
     .map((filter) => createMenuItemTemplate(filter, currentFilterType))
     .join(``);
-
-
   return (
     `<nav class="main-navigation">
 <div class="main-navigation__items">  ${menuItemsTemplate}  </div>
-<a href="#stats" class="main-navigation__additional">Stats</a>
+<a href="#stats"  data-name="${stats.name}"  class="main-navigation__additional  ${stats.type === currentFilterType ? `main-navigation__item--active` : ``} ">${stats.name}</a>
 </nav>
 `
   );

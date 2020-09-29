@@ -17,3 +17,5 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1)
   ];
 };
+
+export const getCurrentDate = () => new Date();
